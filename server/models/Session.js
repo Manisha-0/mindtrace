@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-
-const sessionSchema = new mongoose.Schema({
+module.exports = mongoose.model('Session', new mongoose.Schema({
   studentName:   { type: String, required: true },
   examTitle:     { type: String, required: true },
   question:      { type: String, required: true },
@@ -8,7 +7,5 @@ const sessionSchema = new mongoose.Schema({
   oralAnswer:    { type: String, default: '' },
   status:        { type: String, default: 'active' },
   startedAt:     { type: Date,   default: Date.now },
-  completedAt:   { type: Date },
-})
-
-module.exports = mongoose.model('Session', sessionSchema)
+  completedAt:   { type: Date }
+}))

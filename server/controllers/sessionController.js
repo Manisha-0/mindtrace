@@ -1,61 +1,30 @@
 const Session = require('../models/Session')
-const Event = require('../models/Event')
-const { v4: uuidv4 } = require('uuid')
+const Event   = require('../models/Event')
 
-// Create a new exam session
-const createSession = async (req, res) => {
+exports.createSession = async (req, res) => {
   try {
-    const { studentName, examTitle, question } = req.body
-
-    const session = await Session.create({
-      studentName,
-      examTitle,
-      question,
-    })
-
-    res.status(201).json(session)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+    const s = await Session.create(req.body)
+    res.status(201).json(s)
+  } catch (e) { res.status(500).json({ message: e.message }) }
 }
 
-// Get all sessions for dashboard
-const getAllSessions = async (req, res) => {
+exports.getAllSessions = async (req, res) => {
   try {
-    const sessions = await Session.find().sort({ startedAt: -1 })
-    res.json(sessions)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+    res.json(await Session.find().sort({ startedAt: -1 }))
+  } catch (e) { res.status(500).json({ message: e.message }) }
 }
 
-// Get one session by ID
-const getSessionById = async (req, res) => {
+exports.getSessionById = async (req, res) => {
   try {
-    const session = await Session.findById(req.params.id)
-    if (!session) return res.status(404).json({ message: 'Session not found' })
-    res.json(session)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+    const s = await Session.findById(req.params.id)
+    if (!s) return res.status(404).json({ message: 'Not found' })
+    res.json(s)
+  } catch (e) { res.status(500).json({ message: e.message }) }
 }
 
-// Log a behavioral event
-const logEvent = async (req, res) => {
+exports.logEvent = async (req, res) => {
   try {
-    const { type, riskPoints, metadata } = req.body
-
-    const event = await Event.create({
-      sessionId:  req.params.id,
-      type,
-      riskPoints,
-      metadata,
-    })
-
-    res.status(201).json(event)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
+    const e = await Event.create({ sessionId: req.params.id, ...req.body })
+    res.status(201).json(e)
+  } catch (e) { res.status(500).json({ message: e.message }) }
 }
-
-module.exports = { createSession, getAllSessions, getSessionById, logEvent }

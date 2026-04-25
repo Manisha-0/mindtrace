@@ -1,11 +1,5 @@
-const express = require('express')
-const router = express.Router()
-const {
-  generateFollowUp,
-  submitOralAnswer
-} = require('../controllers/followupController')
-
-router.post('/:id/generate', generateFollowUp)
-router.post('/:id/submit',   submitOralAnswer)
-
-module.exports = router
+const r = require('express').Router()
+const c = require('../controllers/followupController')
+r.post('/:id/generate', c.generate)
+r.post('/:id/submit',   c.submit)
+module.exports = r
