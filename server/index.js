@@ -25,7 +25,11 @@ connectDB()
 
 // Routes
 const sessionRoutes = require('./routes/session')
+const followupRoutes = require('./routes/followup')
+
 app.use('/api/sessions', sessionRoutes)
+app.use('/api/followup', followupRoutes)
+
 
 // Test route
 app.get('/', (req, res) => {
