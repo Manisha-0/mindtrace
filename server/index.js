@@ -23,6 +23,10 @@ app.use(express.json())
 // Connect to database
 connectDB()
 
+// Routes
+const sessionRoutes = require('./routes/session')
+app.use('/api/sessions', sessionRoutes)
+
 // Test route
 app.get('/', (req, res) => {
   res.json({ message: 'MindTrace API is running' })
